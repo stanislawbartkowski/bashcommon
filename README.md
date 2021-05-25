@@ -1,8 +1,10 @@
 # bashcommon
 
-That's simply library of very common bash procs which can be embedded. Usage
+That's a simple library of very common bash procedures which can be embedded.<br>
 
-It requires as a minimum to set LOGFILE environment variable with path to log file. After LOGFILE is set, execute *touchlogfile*
+Configuration.<br>
+
+It requires as a minimum setting LOGFILE environment variable with path to log file. After LOGFILE is set, execute *touchlogfile*
 
 Usage example:
 ```bash
