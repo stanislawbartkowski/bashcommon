@@ -7,7 +7,7 @@ It requires as a minimum to set LOGFILE environment variable with path to log fi
 Usage example:
 ```bash
 
-LOGFILE=/tmp/log/mylog.txr
+LOGFILE=/tmp/log/mylog.txt
 
 source ./commonproc.sh
 
