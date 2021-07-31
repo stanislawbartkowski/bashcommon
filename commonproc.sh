@@ -40,6 +40,19 @@ touchlogfile() {
   touch $LOGFILE  
 }
 
+execute_withlog() {
+    local -r CMD="$@"
+    # important: some command are assuming the first line in the output is not relevant and remove it
+    # do not remove this log $CMD below
+    log "$CMD"
+    eval $CMD
+    if [ $? -ne 0 ]; then
+        # log CMD again, it can preceded by bunch of logs
+        log "$CMD"
+        logfail "Job failed"
+    fi
+}
+
 # -------------------------
 # temporary files
 # -------------------------
