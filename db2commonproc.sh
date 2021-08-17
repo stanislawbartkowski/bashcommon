@@ -76,7 +76,6 @@ db2loadfiles3() {
   log "Loading from $S3FILE S3/AWS file"
 
 cat << EOF > $TMPS
-
   CALL SYSPROC.ADMIN_CMD('LOAD FROM S3::$ENDPOINT::$AWSKEY::$AWSSECRETKEY::$BUCKET::$S3FILE OF DEL modified by coldel| REPLACE INTO $TABLENAME NONRECOVERABLE');
 EOF
 
@@ -92,6 +91,9 @@ db2connect() {
    log "Connecting to $DBNAME user $DBUSER"
    db2 connect to $DBNAME user $DBUSER using $DBPASSWORD
    [ $? -ne 0 ] && logfail "Cannot connect to $DBNAME"
+
+   [[ -z $SCHEMA ]] && return 0
+
    log "Set schema $SCHEMA after connection"
    [[ -n $SCHEMA ]] && db2 "set current schema $SCHEMA"
    [ $? -ne 0 ] && logfail "Cannot set schema $SCHEMA"
@@ -99,6 +101,14 @@ db2connect() {
 
 db2terminate() {
   db2 terminate
+}
+
+db2runscript() {
+  local -r f=$1
+  db2connect
+  db2 -x -tsf $f 
+  [ $? -ne 0 ] && logfail "Failed running $f"
+  db2terminate
 }
 
 db2exportcommand() {
