@@ -14,4 +14,5 @@ LOGFILE=/tmp/log/mylog.txt
 source ./commonproc.sh
 
 touchlogfile
+usetemp
 ```
