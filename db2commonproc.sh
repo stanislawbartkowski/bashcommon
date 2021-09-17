@@ -105,10 +105,8 @@ db2terminate() {
 
 db2runscript() {
   local -r f=$1
-  db2connect
   db2 -x -tsf $f 
   [ $? -ne 0 ] && logfail "Failed running $f"
-  db2terminate
 }
 
 db2exportcommand() {
@@ -118,4 +116,13 @@ db2exportcommand() {
   echo $@
   db2 EXPORT TO $output OF DEL MODIFIED BY NOCHARDEL COLDEL$DELIM $@
   [ $? -ne 0 ] && logfail "Failed while export the statement"
+}
+
+db2loadblobs() {
+  local -r IMPFILE=$1
+  local -r IMPBLOBDIR=$2
+  local -r IMPTABLE=$3
+  log "Load $IMPTABLE table from server $IMPFILE using blobs in $IMPBLOBDIR"
+  db2 "LOAD FROM $IMPFILE OF DEL LOBS FROM $IMPBLOBDIR REPLACE INTO $IMPTABLE"
+  [ $? -ne 0 ] && logfail "Load failed"
 }
