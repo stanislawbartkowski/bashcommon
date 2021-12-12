@@ -3,7 +3,7 @@
 # version 1.00
 # 2021/11/11
 # 2021/12/02 - added set -x w at the beginning
-# 2021/12/12 - change in ladserver
+# 2021/12/12 - change in loadserver
 # -----------------------------------
 
 #set -x
@@ -44,7 +44,7 @@ db2loadfileserver() {
 #  local -r SFILE=`serverfile $INLOADFILE`
 
 cat << EOF > $TMPS
-    CALL SYSPROC.ADMIN_CMD('load from $INLOADFILE  of del modified by coldel| replace into $TABLENAME');
+    CALL SYSPROC.ADMIN_CMD('load from $INLOADFILE  of del modified by coldel$COLDEL replace into $TABLENAME NONRECOVERABLE');
 EOF
 
   db2clirun $TMPS
@@ -84,7 +84,7 @@ db2loadfiles3() {
   log "Loading from $S3FILE S3/AWS file"
 
 cat << EOF > $TMPS
-  CALL SYSPROC.ADMIN_CMD('LOAD FROM S3::$ENDPOINT::$AWSKEY::$AWSSECRETKEY::$BUCKET::$S3FILE OF DEL modified by coldel| REPLACE INTO $TABLENAME NONRECOVERABLE');
+  CALL SYSPROC.ADMIN_CMD('LOAD FROM S3::$ENDPOINT::$AWSKEY::$AWSSECRETKEY::$BUCKET::$S3FILE OF DEL modified by coldel$COLDEL REPLACE INTO $TABLENAME NONRECOVERABLE');
 EOF
 
   db2clirun $TMPS
@@ -133,4 +133,3 @@ db2loadblobs() {
   log "Load $IMPTABLE table from server $IMPFILE using blobs in $IMPBLOBDIR"
   db2 "LOAD FROM $IMPFILE OF DEL LOBS FROM $IMPBLOBDIR MODIFIED BY COLDEL$COLDEL REPLACE INTO $IMPTABLE"
   [ $? -ne 0 ] && logfail "Load failed"
-}
