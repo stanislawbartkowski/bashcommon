@@ -19,6 +19,8 @@ db2clirun() {
     [ -n "$SCHEMA" ] && echo "SET CURRENT SCHEMA $SCHEMA ;" >$ITEMP
     cat $1 >>$ITEMP
     $QUERYTIMEOUT db2cli execsql -statementdelimiter ";" -connstring "$CONNECTION" -inputsql $ITEMP -outfile $OTEMP
+    [ $? -eq 124  ] && return 124
+    # timeout
     local RES=0
     if grep "ErrorMsg" $OTEMP; then
       logfile $OTEMP
