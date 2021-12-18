@@ -4,6 +4,7 @@
 # 2021/11/11
 # 2021/12/02 - added set -x w at the beginning
 # 2021/12/12 - change in loadserver
+# 2021/12/18 - db2clirun, timeout detection
 # -----------------------------------
 
 #set -x
