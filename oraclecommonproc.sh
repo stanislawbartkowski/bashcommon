@@ -2,7 +2,11 @@
 # my oracle command shell functions
 # version 1.00
 # 2021/12/01
+# 2022/01/01 - QUERYTIMEOUT
 # -----------------------------------
+
+#set -x
+#w
 
 oraclecheckvar() {
     required_listofcommands sqlplus sqlldr
@@ -11,6 +15,7 @@ oraclecheckvar() {
 
 oraclescript() {
   local -r TMP=`crtemp`
+  local -r IGNOREEXIT=$2
   cat >$TMP <<EOF
   WHENEVER OSERROR EXIT FAILURE;
   WHENEVER SQLERROR EXIT SQL.SQLCODE;
@@ -21,8 +26,10 @@ oraclescript() {
   alter session set NLS_DATE_FORMAT = 'yyyy-mm-dd';
 EOF
   cat $1 >>$TMP
-  echo EXIT | sqlplus -S "$URL" \@$TMP
-  [ $? -ne 0 ] && logfail "Oracle command failed"
+  echo EXIT | $QUERYTIMEOUT sqlplus -S "$URL" \@$TMP
+  local -r RES=$?
+  [ -z "$IGNOREEXIT" ] && [ $RES -ne 0 ] && logfail "Oracle command failed"
+  return 0
 }
 
 oraclecommand() {
@@ -68,5 +75,5 @@ EOF
   logfile $TMP
   log
   log "log=$LOGDIR/oracleload.log"
-  sqlldr "$URL" control=$TMP log=$LOGDIR/oracleload.log
+  sqlldr "$URL" control=$TMP log=$LOGDIR/oracleload.log  
 }
