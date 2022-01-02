@@ -3,10 +3,14 @@
 # version 1.00
 # 2021/12/01
 # 2022/01/01 - QUERYTIMEOUT
+# 2022/01/02 - bindsize for sqlldr
 # -----------------------------------
 
 #set -x
 #w
+
+ORACLECOMMITROWS=300000
+ORACLEBINDSIZE=209700000
 
 oraclecheckvar() {
     required_listofcommands sqlplus sqlldr
@@ -75,5 +79,5 @@ EOF
   logfile $TMP
   log
   log "log=$LOGDIR/oracleload.log"
-  sqlldr "$URL" control=$TMP log=$LOGDIR/oracleload.log  
+  sqlldr "$URL" control=$TMP log=$LOGDIR/oracleload.log rows=$ORACLECOMMITROWS bindsize=$ORACLEBINDSIZE PARALLEL=TRUE readsize=$ORACLEBINDSIZE
 }
