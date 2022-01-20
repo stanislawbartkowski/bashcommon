@@ -3,6 +3,7 @@
 # version: 1.00
 # 2021/11/11
 # 2021/12/01 - COLDEL added, logfile
+# 2022/01/20 - onthelist, checkuser
 # ----------------------------------
 
 #set -x
@@ -75,6 +76,20 @@ trim() {
     var="${var#"${var%%[![:space:]]*}"}"
     var="${var%"${var##*[![:space:]]}"}"   
     printf '%s' "$var"
+}
+
+onthelist() {
+    local -r word=$1
+    local -r list=$2
+    for w in ${list//,/ }; do
+        [ $w == $word ] &&  return
+    done
+    logfail "$word is not on the list:  $list"
+}
+
+checkuser() {
+    local -r user=$1
+    if ! id $user >/dev/null; then logfail "$user does not exist"; fi    
 }
 
 # -------------------------
