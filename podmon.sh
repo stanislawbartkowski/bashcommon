@@ -7,10 +7,6 @@ MDATELEN=10
 COMMANDLEN=25
 MESSLEN=6
 
-BASEDIR=`dirname $0`
-BASEDIR=`realpath $BASEDIR`
-export COMMONPROC=$BASEDIR/proc/commonproc.sh
-
 monstep() {
     if ! find $CHECKDIR/check*.sh -type f >>$LOGFILE;  then    
        logfail "There is no check scripts in $CHECKDIR directory"
