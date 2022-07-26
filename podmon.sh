@@ -1,6 +1,7 @@
 # ----------------------------------
 # utitlities to monitor podman/docker
 # 2022/07/21 - first draft
+# 2022/07/26 - kill container
 # ----------------------------------
 
 MDATELEN=10
@@ -26,6 +27,8 @@ monstep() {
     if [ $OK -eq 0 ]; then 
       BEG=`getdate`
       log "Healthcheck failed, restart container"
+      COMMAND="$PODMAN kill $CONTAINER"
+      $COMMAND >>$LOGFILE 2>>$LOGFILE
       COMMAND="$PODMAN start $CONTAINER"
       $COMMAND >>$LOGFILE 2>>$LOGFILE
       RES=$?
