@@ -1,12 +1,14 @@
 # ----------------------------------
 # utitlities to monitor podman/docker
 # 2022/07/21 - first draft
-# 2022/07/26 - kill container
+# 2022/12/31 - CURLTIMEOUT
 # ----------------------------------
 
 MDATELEN=10
 COMMANDLEN=25
 MESSLEN=6
+
+export CURLTIMEOUT=${CURLTIMEOUT:-60}
 
 monstep() {
     if ! find $CHECKDIR/check*.sh -type f >>$LOGFILE;  then    
@@ -43,3 +45,4 @@ monrun() {
   required_listofvars "CONTAINER REPORTILE CHECKDIR PODMAN"
   monstep
 }
+
