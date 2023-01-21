@@ -4,6 +4,7 @@
 # 2021/11/11
 # 2021/12/01 - COLDEL added, logfile
 # 2022/01/20 - onthelist, checkuser
+# 2023/01/21 - colon in getdate
 # ----------------------------------
 
 #set -x
@@ -148,7 +149,7 @@ calculatesec() {
 }
 
 getdate() {
-    echo `date +"%Y-%m-%d %H-%M-%S"`
+    echo `date +"%Y-%m-%d %H:%M:%S"`
 }
 
 # -----------------------
